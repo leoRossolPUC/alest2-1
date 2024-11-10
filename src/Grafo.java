@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Grafo {
@@ -51,32 +53,37 @@ public class Grafo {
     }
 
     //contador de regioes
-    public int contarRegioes(){
+    public Map<Integer, Integer> contarRegioes(){
+
+        Map<Integer, Integer> monstrosRegiao = new HashMap<>();
+
         int regioes = 0;
         for(int i = 0; i < linhas; i++){
             for (int j =0; j < colunas; j++){
                 if (!visitados [i][j]){
                     int verticeInicial = i * colunas + j;
                     CaminhamentoProfundidade cp = new CaminhamentoProfundidade(matriz, linhas, colunas, verticeInicial);
+
+                    int contMonstros = 0;
+
                     for (int v = 0; v < linhas * colunas; v++){
                         if (cp.hasPathTo(v)){
                             int x = v/ colunas;
                             int y = v% colunas;
+
                             visitados[x][y] = true;
+
+                            if (Character.isUpperCase(matriz[x][y])){
+                                contMonstros++;
+                            }
                         }
                     }
+                    monstrosRegiao.put(regioes, contMonstros);
                     regioes++;
                 }
             }
         }
-        return regioes;
+        System.out.println("Numero de regioes" + regioes);
+        return monstrosRegiao;
     }
-
-
-
-
-
-
-
-
 }
